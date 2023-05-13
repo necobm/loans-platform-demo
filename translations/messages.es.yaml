@@ -16,6 +16,7 @@ loans:
             products: Productos
             loans: Préstamos
             productTypes: Tipos de productos
-            security: Seguridad
+            settings: Configuración
             users: Usuarios
+            newLoan: Nuevo préstamo
         
