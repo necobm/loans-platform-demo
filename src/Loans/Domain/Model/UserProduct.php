@@ -20,7 +20,7 @@ class UserProduct
     private ?int $id = null;
     /**
      * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="user_id", nullable=false)
+     * @ORM\JoinColumn(name="client_id", nullable=false)
      */
     private User $user;
     /**
