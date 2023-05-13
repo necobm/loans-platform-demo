@@ -59,8 +59,6 @@ class Product
      * @ORM\Column(name="adicional_costs", type="float", nullable=true)
      */
     private float $adicionalCosts = 0;
-
-
     /**
      * @return int|null
      */

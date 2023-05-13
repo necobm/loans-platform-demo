@@ -19,4 +19,8 @@ loans:
             settings: Configuración
             users: Usuarios
             newLoan: Nuevo préstamo
-        
+    
+    exceptions:
+        repository:
+            invalidResource: Tipo de recurso no válido para este repositorio
+            emptySearchCriteria: Debe indicarse al menos un parámetro de búsqueda

@@ -55,7 +55,7 @@ class DashboardController extends AbstractDashboardController
 
             MenuItem::section(new TranslatableMessage('loans.menuItem.mainMenu.products')),
             MenuItem::linkToCrud(new TranslatableMessage('loans.menuItem.mainMenu.loans'), 'fa fa-credit-card', UserProduct::class),
-            MenuItem::linkToUrl(new TranslatableMessage('loans.menuItem.mainMenu.newLoan'), 'fa fa-money', '#'),
+            MenuItem::linkToRoute(new TranslatableMessage('loans.menuItem.mainMenu.newLoan'), 'fa fa-money', 'recommendations_get'),
             MenuItem::section(new TranslatableMessage('loans.menuItem.mainMenu.settings')),
             MenuItem::linkToCrud(new TranslatableMessage('loans.menuItem.mainMenu.products'), 'fa fa-dollar', Product::class),
             MenuItem::linkToCrud(new TranslatableMessage('loans.menuItem.mainMenu.productTypes'), 'fa fa-box', ProductType::class),

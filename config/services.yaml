@@ -20,5 +20,10 @@ services:
             - '../src/Loans/Domain/Model/'
             - '../src/Kernel.php'
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+    App\Loans\Infrastructure\Repository\ProductRepository:
+        arguments:
+            - 'App\Loans\Domain\Model\Product'            
+        
+    App\Loans\Application\UseCase\ProductRecommendationUseCase:
+        arguments:
+            - '@App\Loans\Infrastructure\Repository\ProductRepository'
