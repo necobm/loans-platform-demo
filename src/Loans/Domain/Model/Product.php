@@ -47,6 +47,19 @@ class Product
      * @ORM\JoinColumn(name="product_type_id", nullable=false)
      */
     private ProductType $type;
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="minimal_income_requirement", type="float", nullable=true)
+     */
+    private float $minimalIncomeRequirement = 0;
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="adicional_costs", type="float", nullable=true)
+     */
+    private float $adicionalCosts = 0;
+
 
     /**
      * @return int|null
@@ -136,4 +149,35 @@ class Product
         $this->type = $type;
     }
 
+    /**
+     * @return float
+     */
+    public function getMinimalIncomeRequirement(): float
+    {
+        return $this->minimalIncomeRequirement;
+    }
+
+    /**
+     * @param float $minimalIncomeRequirement
+     */
+    public function setMinimalIncomeRequirement(float $minimalIncomeRequirement): void
+    {
+        $this->minimalIncomeRequirement = $minimalIncomeRequirement;
+    }
+
+    /**
+     * @return float
+     */
+    public function getAdicionalCosts(): float
+    {
+        return $this->adicionalCosts;
+    }
+
+    /**
+     * @param float $adicionalCosts
+     */
+    public function setAdicionalCosts(float $adicionalCosts): void
+    {
+        $this->adicionalCosts = $adicionalCosts;
+    }
 }
