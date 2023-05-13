@@ -78,4 +78,9 @@ class ProductType
     {
         $this->value = $value;
     }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
 }

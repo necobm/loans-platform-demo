@@ -2,13 +2,17 @@
 
 namespace App\Loans\Infrastructure\Controller;
 
+use App\Loans\Domain\Model\Product;
+use App\Loans\Domain\Model\ProductType;
 use App\Loans\Domain\Model\User;
+use App\Loans\Domain\Model\UserProduct;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Translation\TranslatableMessage;
 
 class DashboardController extends AbstractDashboardController
 {
@@ -49,11 +53,12 @@ class DashboardController extends AbstractDashboardController
         return [
             MenuItem::linkToDashboard('Dashboard', 'fa fa-home'),
 
-            /*MenuItem::section('Products'),
-            MenuItem::linkToCrud('Products', 'fa fa-credit-card', Product::class),
-            MenuItem::linkToCrud('Loans', 'fa fa-file-text', UserProduct::class),*/
-            MenuItem::section('Security'),
-            MenuItem::linkToCrud('Users', 'fa fa-user', User::class)
+            MenuItem::section(new TranslatableMessage('loans.menuItem.mainMenu.products')),
+            MenuItem::linkToCrud(new TranslatableMessage('loans.menuItem.mainMenu.loans'), 'fa fa-credit-card', UserProduct::class),
+            MenuItem::linkToCrud(new TranslatableMessage('loans.menuItem.mainMenu.products'), 'fa fa-dollar', Product::class),
+            MenuItem::linkToCrud(new TranslatableMessage('loans.menuItem.mainMenu.productTypes'), 'fa fa-box', ProductType::class),
+            MenuItem::section(new TranslatableMessage('loans.menuItem.mainMenu.security')),
+            MenuItem::linkToCrud(new TranslatableMessage('loans.menuItem.mainMenu.users'), 'fa fa-user', User::class)
         ];
     }
 }

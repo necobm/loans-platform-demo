@@ -1,0 +1,21 @@
+loans:    
+    formFieldLabel:
+        product:
+            name: Nombre
+            interestRate: Tasa de interés
+            maxTerm: Plazo máximo
+            maxAmount: Monto máximo
+            minimalIncomeRequirement: Requisitos de ingresos mínimos
+            adicionalCosts: Costes adicionales
+            type: Tipo de producto
+        productType:
+            name: Nombre
+            value: Valor
+    menuItem:
+        mainMenu:
+            products: Productos
+            loans: Préstamos
+            productTypes: Tipos de productos
+            security: Seguridad
+            users: Usuarios
+        
