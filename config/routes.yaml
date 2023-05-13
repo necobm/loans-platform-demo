@@ -1,0 +1,5 @@
+controllers_loans:    
+    resource:
+        path: ../src/Loans/Infrastructure/Controller/
+        namespace: App\Loans\Infrastructure\Controller
+    type: attribute
