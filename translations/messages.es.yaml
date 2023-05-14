@@ -11,13 +11,18 @@ loans:
         productType:
             name: Nombre
             value: Valor
+    dashboardControllers:
+        clientProductPageTitle: Mis Productos
+        productTypePageTitle: Tipos de Productos
+        clientPageTitle: Clientes
+        productPageTitle: Productos
     menuItem:
         mainMenu:
             products: Productos
             loans: Préstamos
             productTypes: Tipos de productos
             settings: Configuración
-            users: Usuarios
+            clients: Clientes
             newLoan: Nuevo préstamo
     
     exceptions:

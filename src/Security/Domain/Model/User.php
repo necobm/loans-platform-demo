@@ -29,9 +29,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="password", type="string", length=128, nullable=false)
+     * @ORM\Column(name="password", type="string", length=256, nullable=false)
      */
     private string $password;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="rol", type="string", length=20, nullable=false)
+     */
+    private string $rol = 'ROLE_USER';
 
     /**
      * @return int|null
@@ -75,7 +81,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getRoles(): array
     {
-        return ['ROLE_USER'];
+        return [$this->rol];
     }
 
     public function eraseCredentials()
