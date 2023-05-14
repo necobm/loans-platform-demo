@@ -2,6 +2,8 @@
 
 namespace App\Loans\Domain\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -42,13 +44,43 @@ class User
      * @ORM\Column(name="email", type="string", length=128, nullable=false, unique=true)
      */
     private string $email;
-
     /**
      * @var string
      *
      * @ORM\Column(name="city", type="string", length=256, nullable=false)
      */
     private string $city;
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="net_monthly_income", type="float", precision=2, nullable=false)
+     */
+    private float $netMonthlyIncome;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="total_monthly_spends", type="float", precision=2, nullable=false)
+     */
+    private float $totalMonthlySpends;
+    /**
+     * @var ArrayCollection|Collection
+     *
+     * @ORM\OneToMany(targetEntity="UserProduct", mappedBy="user")
+     */
+    private Collection|ArrayCollection $products;
+    /**
+     * @var UserFinancialPreferences|null
+     *
+     * @ORM\OneToOne(targetEntity="UserFinancialPreferences", mappedBy="user")
+     */
+    private ?UserFinancialPreferences $financialPreferences;
+
+    public function __construct()
+    {
+        $this->products = new ArrayCollection();
+    }
+
 
     /**
      * @return int|null
@@ -136,6 +168,79 @@ class User
     public function setCity(string $city): void
     {
         $this->city = $city;
+    }
+
+    /**
+     * @return float
+     */
+    public function getNetMonthlyIncome(): float
+    {
+        return $this->netMonthlyIncome;
+    }
+
+    /**
+     * @param float $netMonthlyIncome
+     */
+    public function setNetMonthlyIncome(float $netMonthlyIncome): void
+    {
+        $this->netMonthlyIncome = $netMonthlyIncome;
+    }
+
+    /**
+     * @return float
+     */
+    public function getTotalMonthlySpends(): float
+    {
+        $totalMonthlySpends = $this->totalMonthlySpends;
+        $totalMonthlySpends += array_reduce($this->products->getValues(), function (float $sum, UserProduct $up){
+            if ($up->getStatus() === UserProduct::STATUS_ACTIVE) {
+                $sum += $up->getMonthlyFee();
+                return $sum;
+            }
+            return 0;
+        }, 0);
+
+        return $totalMonthlySpends;
+    }
+
+    /**
+     * @param float $totalMonthlySpends
+     */
+    public function setTotalMonthlySpends(float $totalMonthlySpends): void
+    {
+        $this->totalMonthlySpends = $totalMonthlySpends;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    /**
+     * @param ArrayCollection $products
+     */
+    public function setProducts(ArrayCollection $products): void
+    {
+        $this->products = $products;
+    }
+
+    /**
+     * @return UserFinancialPreferences|null
+     */
+    public function getFinancialPreferences(): ?UserFinancialPreferences
+    {
+        return $this->financialPreferences;
+    }
+
+    /**
+     * @param UserFinancialPreferences|null $financialPreferences
+     */
+    public function setFinancialPreferences(?UserFinancialPreferences $financialPreferences): void
+    {
+        $this->financialPreferences = $financialPreferences;
     }
 
 }

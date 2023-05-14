@@ -3,6 +3,8 @@
 namespace App\Loans\Infrastructure\Repository;
 
 use App\Loans\Domain\Repository\ResourceRepositoryInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Translation\TranslatableMessage;
 

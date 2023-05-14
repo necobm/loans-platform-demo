@@ -22,8 +22,13 @@ services:
 
     App\Loans\Infrastructure\Repository\ProductRepository:
         arguments:
-            - 'App\Loans\Domain\Model\Product'            
+            - 'App\Loans\Domain\Model\Product'
+            
+    App\Loans\Infrastructure\Repository\ProductRecommendationRepository:
+        arguments:
+            - 'App\Loans\Domain\Model\ProductRecommendation'        
         
     App\Loans\Application\UseCase\ProductRecommendationUseCase:
         arguments:
             - '@App\Loans\Infrastructure\Repository\ProductRepository'
+            - '@App\Loans\Infrastructure\Repository\ProductRecommendationRepository'

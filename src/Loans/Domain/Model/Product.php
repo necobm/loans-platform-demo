@@ -2,6 +2,8 @@
 
 namespace App\Loans\Domain\Model;
 
+use App\Loans\Domain\Exception\ExceededLoanAmountException;
+use App\Loans\Domain\Exception\InvalidFinancialPreferencesException;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -27,7 +29,7 @@ class Product
     /**
      * @var float
      *
-     * @ORM\Column(name="interest_rate", type="float", nullable=false)
+     * @ORM\Column(name="interest_rate", type="float", precision=2, nullable=false)
      */
     private float $interestRate;
     /**
@@ -39,7 +41,7 @@ class Product
     /**
      * @var float
      *
-     * @ORM\Column(name="max_amount", type="float", nullable=false)
+     * @ORM\Column(name="max_amount", type="float", precision=2, nullable=false)
      */
     private float $maxAmount;
     /**
@@ -50,13 +52,13 @@ class Product
     /**
      * @var float
      *
-     * @ORM\Column(name="minimal_income_requirement", type="float", nullable=true)
+     * @ORM\Column(name="minimal_income_requirement", type="float", precision=2, nullable=true)
      */
     private float $minimalIncomeRequirement = 0;
     /**
      * @var float
      *
-     * @ORM\Column(name="adicional_costs", type="float", nullable=true)
+     * @ORM\Column(name="adicional_costs", type="float", precision=2, nullable=true)
      */
     private float $adicionalCosts = 0;
     /**
@@ -177,5 +179,75 @@ class Product
     public function setAdicionalCosts(float $adicionalCosts): void
     {
         $this->adicionalCosts = $adicionalCosts;
+    }
+
+    /**
+     * @throws InvalidFinancialPreferencesException
+     */
+    public function getUserFinancialCompatibilityScore(User $user): int
+    {
+        // First we check if the product is compatible with the user preferences
+
+        // User preferences have been defined before by the Chat Bot
+        if (is_null($user->getFinancialPreferences())) {
+           throw new InvalidFinancialPreferencesException();
+        }
+
+        $userPreferences = $user->getFinancialPreferences();
+
+        if ($this->getType()->getValue() !== $userPreferences->getProductType()->getValue()
+            || $this->maxAmount < $userPreferences->getLoanAmount()
+            || $this->maxTerm < $userPreferences->getMaxTerm()
+        ) {
+            // User preferences are incompatible with this product
+            return 0;
+        }
+
+        //Calculate score based on Product features and User personal and financial information
+        //If any of the requisites is not reached, the product is considered incompatible and scores 0
+
+        $score = 0;
+
+        //Score by user age, as youngest the user, more score will give
+        if (($user->getAge() + $this->maxTerm) < 80) {
+            $totalYears = $user->getAge() + $this->maxTerm;
+            $score = 100 - ( ($totalYears * 100) / 80 );
+        }
+        else {
+            return 0;
+        }
+
+        //Score by user's financial capacity, adding the new spend from this product
+        try {
+            $totalMonthlySpends = $user->getTotalMonthlySpends() + $this->getMonthlyFeeForGivenAmount($userPreferences->getLoanAmount());
+        } catch (ExceededLoanAmountException $exception) {
+            // The requested amount is greater than the Product max amount, for instance, the product is incompatible
+            return 0;
+        }
+
+        $percentage = round($totalMonthlySpends * 100 / $user->getNetMonthlyIncome(), 2);
+        if ($percentage <= 40) {
+            $score = 100 - $percentage;
+        }
+        else {
+            return 0;
+        }
+
+        return (int)$score;
+    }
+
+    /**
+     * @throws ExceededLoanAmountException
+     * @param float $amount
+     * @return float
+     */
+    public function getMonthlyFeeForGivenAmount(float $amount): float
+    {
+        if ($amount > $this->maxAmount) {
+            throw new ExceededLoanAmountException();
+        }
+        $totalAmount = $amount + ($this->getInterestRate() / 100) * $amount;
+
+        return round($totalAmount / 12, 2);
     }
 }

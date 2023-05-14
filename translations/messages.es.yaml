@@ -24,3 +24,12 @@ loans:
         repository:
             invalidResource: Tipo de recurso no válido para este repositorio
             emptySearchCriteria: Debe indicarse al menos un parámetro de búsqueda
+        useCase:
+            invalidFinancialPreferences: El usuario no tiene establecidas sus preferencias financieras
+    
+    templates:
+        productRecommendation:
+            headerSuccess: Esta es nuestra recomendación personalizada para ti
+            product: Producto
+            headerFailed: Ups, no tenemos nada para ti por el momento
+            textFailed: No hemos encontrado un producto que corresponda con tus preferencias o situación financiera, puedes ajustar tus preferencias en una nueva conversación con nuestro chat bot

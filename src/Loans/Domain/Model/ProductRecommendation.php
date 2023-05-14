@@ -6,13 +6,13 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="user_product")
+ * @ORM\Table(name="product_recommendation")
  */
-class UserProduct
+class ProductRecommendation
 {
-    public const STATUS_ACTIVE = 'ACTIVE';
-    public const STATUS_IN_REVISION = 'IN_REVISION';
-    public const STATUS_FINISHED = 'FINISHED';
+    public const STATUS_CREATED = 'CREATED';
+    public const STATUS_ACCEPTED = 'ACCEPTED';
+    public const STATUS_REJECTED = 'REJECTED';
 
     /**
      * @var int|null
@@ -35,15 +35,15 @@ class UserProduct
     /**
      * @var \DateTimeImmutable
      *
-     * @ORM\Column(name="start_date", type="datetime", nullable=false)
+     * @ORM\Column(name="date_created", type="datetime", nullable=false)
      */
-    private \DateTimeImmutable $startDate;
+    private \DateTimeImmutable $dateCreated;
     /**
-     * @var \DateTimeImmutable
+     * @var \DateTimeImmutable|null
      *
-     * @ORM\Column(name="end_date", type="date", nullable=false)
+     * @ORM\Column(name="date_status_changed", type="datetime", nullable=true)
      */
-    private \DateTimeImmutable $endDate;
+    private ?\DateTimeImmutable $dateStatusChanged;
     /**
      * @var int
      *
@@ -57,12 +57,39 @@ class UserProduct
      */
     private float $monthlyFee;
     /**
+     * @var int
+     *
+     * @ORM\Column(name="loan_term", type="integer", nullable=false)
+     */
+    private int $loanTerm;
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="loan_amount", type="float", precision=2, nullable=false)
+     */
+    private float $loanAmount;
+    /**
      * @var string
      *
      * @ORM\Column(name="status", type="string", length=20, nullable=false)
      */
-    private string $status = self::STATUS_IN_REVISION;
+    private string $status = self::STATUS_CREATED;
 
+    public function __construct(
+        User $user,
+        Product $product
+    )
+    {
+        $this->dateCreated = new \DateTimeImmutable();
+        $this->setUser($user);
+        $this->setProduct($product);
+        $this->setInterestRate($product->getInterestRate());
+        $this->setMonthlyFee(
+            $product->getMonthlyFeeForGivenAmount($user->getFinancialPreferences()->getLoanAmount())
+        );
+        $this->setLoanAmount($user->getFinancialPreferences()->getLoanAmount());
+        $this->setLoanTerm($user->getFinancialPreferences()->getMaxTerm());
+    }
 
     /**
      * @return int|null
@@ -107,33 +134,33 @@ class UserProduct
     /**
      * @return \DateTimeImmutable
      */
-    public function getStartDate(): \DateTimeImmutable
+    public function getDateCreated(): \DateTimeImmutable
     {
-        return $this->startDate;
+        return $this->dateCreated;
     }
 
     /**
-     * @param \DateTimeImmutable $startDate
+     * @param \DateTimeImmutable $dateCreated
      */
-    public function setStartDate(\DateTimeImmutable $startDate): void
+    public function setDateCreated(\DateTimeImmutable $dateCreated): void
     {
-        $this->startDate = $startDate;
+        $this->dateCreated = $dateCreated;
     }
 
     /**
-     * @return \DateTimeImmutable
+     * @return \DateTimeImmutable|null
      */
-    public function getEndDate(): \DateTimeImmutable
+    public function getDateStatusChanged(): ?\DateTimeImmutable
     {
-        return $this->endDate;
+        return $this->dateStatusChanged;
     }
 
     /**
-     * @param \DateTimeImmutable $endDate
+     * @param \DateTimeImmutable|null $dateStatusChanged
      */
-    public function setEndDate(\DateTimeImmutable $endDate): void
+    public function setDateStatusChanged(?\DateTimeImmutable $dateStatusChanged): void
     {
-        $this->endDate = $endDate;
+        $this->dateStatusChanged = $dateStatusChanged;
     }
 
     /**
@@ -169,6 +196,38 @@ class UserProduct
     }
 
     /**
+     * @return int
+     */
+    public function getLoanTerm(): int
+    {
+        return $this->loanTerm;
+    }
+
+    /**
+     * @param int $loanTerm
+     */
+    public function setLoanTerm(int $loanTerm): void
+    {
+        $this->loanTerm = $loanTerm;
+    }
+
+    /**
+     * @return float
+     */
+    public function getLoanAmount(): float
+    {
+        return $this->loanAmount;
+    }
+
+    /**
+     * @param float $loanAmount
+     */
+    public function setLoanAmount(float $loanAmount): void
+    {
+        $this->loanAmount = $loanAmount;
+    }
+
+    /**
      * @return string
      */
     public function getStatus(): string
@@ -183,5 +242,7 @@ class UserProduct
     {
         $this->status = $status;
     }
+
+
 
 }

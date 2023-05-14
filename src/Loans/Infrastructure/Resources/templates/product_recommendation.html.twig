@@ -1,6 +1,11 @@
 {% extends '@EasyAdmin/layout.html.twig' %}
 
 {% block main %}
-    <h1>Hello!!</h1>
-    <p>You have {{ products_count }} products</p>
+    {% if product_recommendation is defined and product_recommendation != null %}
+        <h1>{{ 'loans.templates.productRecommendation.headerSuccess'|trans }}</h1>
+        <p><b>{{ 'loans.templates.productRecommendation.product' }}: </b> {{ product_recommendation.product.name }}</p>
+    {% else %}
+        <h1>{{ 'loans.templates.productRecommendation.headerFailed'|trans }}</h1>
+        <p>{{ 'loans.templates.productRecommendation.textFailed'|trans }}</p>
+    {% endif %}
 {% endblock %}
