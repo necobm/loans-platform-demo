@@ -2,4 +2,12 @@ controllers_loans:
     resource:
         path: ../src/Loans/Infrastructure/Controller/
         namespace: App\Loans\Infrastructure\Controller
+        prefix: /loans
+    type: attribute
+    
+    
+controllers_security:
+    resource:
+        path: ../src/Security/Controller/
+        namespace: App\Security\Controller
     type: attribute

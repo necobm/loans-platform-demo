@@ -184,22 +184,22 @@ class Product
     /**
      * @throws InvalidFinancialPreferencesException
      */
-    public function getUserFinancialCompatibilityScore(User $user): int
+    public function getClientFinancialCompatibilityScore(Client $client): int
     {
         // First we check if the product is compatible with the user preferences
 
         // User preferences have been defined before by the Chat Bot
-        if (is_null($user->getFinancialPreferences())) {
+        if (is_null($client->getFinancialPreferences())) {
            throw new InvalidFinancialPreferencesException();
         }
 
-        $userPreferences = $user->getFinancialPreferences();
+        $clientPreferences = $client->getFinancialPreferences();
 
-        if ($this->getType()->getValue() !== $userPreferences->getProductType()->getValue()
-            || $this->maxAmount < $userPreferences->getLoanAmount()
-            || $this->maxTerm < $userPreferences->getMaxTerm()
+        if ($this->getType()->getValue() !== $clientPreferences->getProductType()->getValue()
+            || $this->maxAmount < $clientPreferences->getLoanAmount()
+            || $this->maxTerm < $clientPreferences->getMaxTerm()
         ) {
-            // User preferences are incompatible with this product
+            // Client preferences are incompatible with this product
             return 0;
         }
 
@@ -209,8 +209,8 @@ class Product
         $score = 0;
 
         //Score by user age, as youngest the user, more score will give
-        if (($user->getAge() + $this->maxTerm) < 80) {
-            $totalYears = $user->getAge() + $this->maxTerm;
+        if (($client->getAge() + $this->maxTerm) < 80) {
+            $totalYears = $client->getAge() + $this->maxTerm;
             $score = 100 - ( ($totalYears * 100) / 80 );
         }
         else {
@@ -219,13 +219,13 @@ class Product
 
         //Score by user's financial capacity, adding the new spend from this product
         try {
-            $totalMonthlySpends = $user->getTotalMonthlySpends() + $this->getMonthlyFeeForGivenAmount($userPreferences->getLoanAmount());
+            $totalMonthlySpends = $client->getTotalMonthlySpends() + $this->getMonthlyFeeForGivenAmount($clientPreferences->getLoanAmount());
         } catch (ExceededLoanAmountException $exception) {
             // The requested amount is greater than the Product max amount, for instance, the product is incompatible
             return 0;
         }
 
-        $percentage = round($totalMonthlySpends * 100 / $user->getNetMonthlyIncome(), 2);
+        $percentage = round($totalMonthlySpends * 100 / $client->getNetMonthlyIncome(), 2);
         if ($percentage <= 40) {
             $score = 100 - $percentage;
         }

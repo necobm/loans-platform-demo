@@ -1,22 +1,24 @@
 doctrine:
     dbal:
         url: '%env(resolve:DATABASE_URL)%'
-
-        # IMPORTANT: You MUST configure your server version,
-        # either here or in the DATABASE_URL env var (see .env file)
-        #server_version: '15'
     orm:
         auto_generate_proxy_classes: true
         enable_lazy_ghost_objects: true
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         auto_mapping: true
         mappings:
-            App:
+            Loans:
                 is_bundle: false
                 type: annotation
                 dir: '%kernel.project_dir%/src/Loans/Domain/Model'
                 prefix: 'App\Loans\Domain\Model'
                 alias: Loans
+            App:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Security/Domain/Model'
+                prefix: 'App\Security\Domain\Model'
+                alias: App    
 
 when@test:
     doctrine:

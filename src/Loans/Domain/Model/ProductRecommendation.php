@@ -23,10 +23,10 @@ class ProductRecommendation
      */
     private ?int $id = null;
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="products")
+     * @ORM\ManyToOne(targetEntity="Client")
      * @ORM\JoinColumn(name="client_id", nullable=false)
      */
-    private User $user;
+    private Client $client;
     /**
      * @ORM\ManyToOne(targetEntity="Product")
      * @ORM\JoinColumn(name="product_id", nullable=false)
@@ -76,19 +76,19 @@ class ProductRecommendation
     private string $status = self::STATUS_CREATED;
 
     public function __construct(
-        User $user,
+        Client  $client,
         Product $product
     )
     {
         $this->dateCreated = new \DateTimeImmutable();
-        $this->setUser($user);
+        $this->setClient($client);
         $this->setProduct($product);
         $this->setInterestRate($product->getInterestRate());
         $this->setMonthlyFee(
-            $product->getMonthlyFeeForGivenAmount($user->getFinancialPreferences()->getLoanAmount())
+            $product->getMonthlyFeeForGivenAmount($client->getFinancialPreferences()->getLoanAmount())
         );
-        $this->setLoanAmount($user->getFinancialPreferences()->getLoanAmount());
-        $this->setLoanTerm($user->getFinancialPreferences()->getMaxTerm());
+        $this->setLoanAmount($client->getFinancialPreferences()->getLoanAmount());
+        $this->setLoanTerm($client->getFinancialPreferences()->getMaxTerm());
     }
 
     /**
@@ -100,19 +100,19 @@ class ProductRecommendation
     }
 
     /**
-     * @return User
+     * @return Client
      */
-    public function getUser(): User
+    public function getClient(): Client
     {
-        return $this->user;
+        return $this->client;
     }
 
     /**
-     * @param User $user
+     * @param Client $client
      */
-    public function setUser(User $user): void
+    public function setClient(Client $client): void
     {
-        $this->user = $user;
+        $this->client = $client;
     }
 
     /**

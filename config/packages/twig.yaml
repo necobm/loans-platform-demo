@@ -2,6 +2,7 @@ twig:
     default_path: '%kernel.project_dir%/templates'
     paths:
         'src/Loans/Infrastructure/Resources/templates': 'Loans'
+        'src/Security/Resources/templates': 'Security'
 
 when@test:
     twig:

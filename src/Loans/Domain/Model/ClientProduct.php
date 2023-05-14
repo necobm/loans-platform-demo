@@ -6,9 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="user_product")
+ * @ORM\Table(name="client_product")
  */
-class UserProduct
+class ClientProduct
 {
     public const STATUS_ACTIVE = 'ACTIVE';
     public const STATUS_IN_REVISION = 'IN_REVISION';
@@ -23,10 +23,10 @@ class UserProduct
      */
     private ?int $id = null;
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="products")
+     * @ORM\ManyToOne(targetEntity="Client", inversedBy="products")
      * @ORM\JoinColumn(name="client_id", nullable=false)
      */
-    private User $user;
+    private Client $client;
     /**
      * @ORM\ManyToOne(targetEntity="Product")
      * @ORM\JoinColumn(name="product_id", nullable=false)
@@ -73,19 +73,19 @@ class UserProduct
     }
 
     /**
-     * @return User
+     * @return Client
      */
-    public function getUser(): User
+    public function getClient(): Client
     {
-        return $this->user;
+        return $this->client;
     }
 
     /**
-     * @param User $user
+     * @param Client $client
      */
-    public function setUser(User $user): void
+    public function setClient(Client $client): void
     {
-        $this->user = $user;
+        $this->client = $client;
     }
 
     /**

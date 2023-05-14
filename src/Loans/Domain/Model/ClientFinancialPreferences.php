@@ -6,9 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="user_financial_preferences")
+ * @ORM\Table(name="client_financial_preferences")
  */
-class UserFinancialPreferences
+class ClientFinancialPreferences
 {
     /**
      * @var int|null
@@ -19,12 +19,12 @@ class UserFinancialPreferences
      */
     private ?int $id = null;
     /**
-     * @var User
+     * @var Client
      *
-     * @ORM\OneToOne(targetEntity="User", inversedBy="financialPreferences")
+     * @ORM\OneToOne(targetEntity="Client", inversedBy="financialPreferences")
      * @ORM\JoinColumn(name="client_id", nullable=false, unique=true)
      */
-    private User $user;
+    private Client $client;
     /**
      * @var ProductType
      *
@@ -54,19 +54,19 @@ class UserFinancialPreferences
     }
 
     /**
-     * @return User
+     * @return Client
      */
-    public function getUser(): User
+    public function getClient(): Client
     {
-        return $this->user;
+        return $this->client;
     }
 
     /**
-     * @param User $user
+     * @param Client $client
      */
-    public function setUser(User $user): void
+    public function setClient(Client $client): void
     {
-        $this->user = $user;
+        $this->client = $client;
     }
 
     /**

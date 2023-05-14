@@ -3,7 +3,7 @@
 namespace App\Loans\Infrastructure\Controller;
 
 
-use App\Loans\Domain\Model\User;
+use App\Loans\Domain\Model\Client;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,12 +21,12 @@ class ProductRecommendationController
         private EntityManagerInterface $entityManager
     ){}
 
-    #[Route(path: '/loans/recommendations', name: 'recommendations_get', methods: ['GET'])]
+    #[Route(path: '/recommendations', name: 'recommendations_get', methods: ['GET'])]
     public function getProductRecommendations(Request $request): Response
     {
-        $user = $this->entityManager->find(User::class, 1);
+        $user = $this->entityManager->find(Client::class, 1);
         try {
-            $productRecommendation = $this->productRecommendationUseCase->generateProductRecommendationForAUser($user);
+            $productRecommendation = $this->productRecommendationUseCase->generateProductRecommendationForAClient($user);
             return new Response(
                 $this->twig->render('@Loans/product_recommendation.html.twig', [
                     'product_recommendation' => $productRecommendation

@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="client")
  */
-class User
+class Client
 {
     /**
      * @var int|null
@@ -66,15 +66,15 @@ class User
     /**
      * @var ArrayCollection|Collection
      *
-     * @ORM\OneToMany(targetEntity="UserProduct", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="ClientProduct", mappedBy="client")
      */
     private Collection|ArrayCollection $products;
     /**
-     * @var UserFinancialPreferences|null
+     * @var ClientFinancialPreferences|null
      *
-     * @ORM\OneToOne(targetEntity="UserFinancialPreferences", mappedBy="user")
+     * @ORM\OneToOne(targetEntity="ClientFinancialPreferences", mappedBy="client")
      */
-    private ?UserFinancialPreferences $financialPreferences;
+    private ?ClientFinancialPreferences $financialPreferences;
 
     public function __construct()
     {
@@ -192,8 +192,8 @@ class User
     public function getTotalMonthlySpends(): float
     {
         $totalMonthlySpends = $this->totalMonthlySpends;
-        $totalMonthlySpends += array_reduce($this->products->getValues(), function (float $sum, UserProduct $up){
-            if ($up->getStatus() === UserProduct::STATUS_ACTIVE) {
+        $totalMonthlySpends += array_reduce($this->products->getValues(), function (float $sum, ClientProduct $up){
+            if ($up->getStatus() === ClientProduct::STATUS_ACTIVE) {
                 $sum += $up->getMonthlyFee();
                 return $sum;
             }
@@ -228,17 +228,17 @@ class User
     }
 
     /**
-     * @return UserFinancialPreferences|null
+     * @return ClientFinancialPreferences|null
      */
-    public function getFinancialPreferences(): ?UserFinancialPreferences
+    public function getFinancialPreferences(): ?ClientFinancialPreferences
     {
         return $this->financialPreferences;
     }
 
     /**
-     * @param UserFinancialPreferences|null $financialPreferences
+     * @param ClientFinancialPreferences|null $financialPreferences
      */
-    public function setFinancialPreferences(?UserFinancialPreferences $financialPreferences): void
+    public function setFinancialPreferences(?ClientFinancialPreferences $financialPreferences): void
     {
         $this->financialPreferences = $financialPreferences;
     }
