@@ -2,10 +2,13 @@
 
 namespace App\Loans\Infrastructure\Controller;
 
+use App\Loans\Application\UseCase\ClientUseCase;
+use App\Loans\Domain\Model\ClientFinancialPreferences;
 use App\Loans\Domain\Model\Product;
 use App\Loans\Domain\Model\ProductType;
 use App\Loans\Domain\Model\Client;
 use App\Loans\Domain\Model\ClientProduct;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -17,7 +20,8 @@ use Symfony\Component\Translation\TranslatableMessage;
 class DashboardController extends AbstractDashboardController
 {
     public function __construct(
-        private readonly AdminUrlGenerator $adminUrlGenerator
+        private readonly AdminUrlGenerator $adminUrlGenerator,
+        private readonly ClientUseCase $clientUseCase
     ){}
 
     #[Route('/loans', name: 'loans')]
@@ -27,7 +31,12 @@ class DashboardController extends AbstractDashboardController
             return $this->redirect($this->adminUrlGenerator->setController(ProductCrudController::class)->generateUrl());
         }
 
-        return $this->redirect($this->adminUrlGenerator->setController(ClientProductCrudController::class)->generateUrl());
+        $client = $this->clientUseCase->getClientByEmail($this->getUser()->getUserIdentifier());
+        return $this->redirect($this->adminUrlGenerator->setController(ClientCrudController::class)->setAction(
+            Action::EDIT
+        )->set('entityId',$client->getId()));
+
+        //return $this->redirect($this->adminUrlGenerator->setController(ClientProductCrudController::class)->generateUrl());
     }
 
     public function configureDashboard(): Dashboard
@@ -38,11 +47,18 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
+        $client = $this->clientUseCase->getClientByEmail($this->getUser()->getUserIdentifier());
         return [
             MenuItem::linkToDashboard('Dashboard', 'fa fa-home'),
-
             MenuItem::section(new TranslatableMessage('loans.menuItem.mainMenu.products')),
             MenuItem::linkToCrud(new TranslatableMessage('loans.menuItem.mainMenu.loans'), 'fa fa-credit-card', ClientProduct::class),
+            MenuItem::linkToUrl(
+                new TranslatableMessage('loans.menuItem.mainMenu.clientPreferences'),
+                'fa fa-wrench',
+                $this->adminUrlGenerator->setController(ClientPreferencesCrudController::class)->setAction(
+                    Action::EDIT
+                )->set('entityId',$client->getFinancialPreferences()->getId())
+            ),
             MenuItem::linkToRoute(new TranslatableMessage('loans.menuItem.mainMenu.newLoan'), 'fa fa-money', 'recommendations_get'),
             MenuItem::section(new TranslatableMessage('loans.menuItem.mainMenu.settings'))->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud(new TranslatableMessage('loans.menuItem.mainMenu.products'), 'fa fa-dollar', Product::class)->setPermission('ROLE_ADMIN'),

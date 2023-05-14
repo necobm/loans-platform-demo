@@ -11,11 +11,16 @@ loans:
         productType:
             name: Nombre
             value: Valor
+        clientPreferences:
+            loanAmount: Monto del préstamo/crédito
+            maxTerm: Plazo en años
+            productType: Tipo de producto
     dashboardControllers:
         clientProductPageTitle: Mis Productos
         productTypePageTitle: Tipos de Productos
         clientPageTitle: Clientes
         productPageTitle: Productos
+        clientPreferenceTitle: Preferencias para solicitud de nuevo Producto Financiero
     menuItem:
         mainMenu:
             products: Productos
@@ -24,6 +29,7 @@ loans:
             settings: Configuración
             clients: Clientes
             newLoan: Nuevo préstamo
+            clientPreferences: Preferencias
     
     exceptions:
         repository:
