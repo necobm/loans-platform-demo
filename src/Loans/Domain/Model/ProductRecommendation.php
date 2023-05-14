@@ -37,13 +37,13 @@ class ProductRecommendation
      *
      * @ORM\Column(name="date_created", type="datetime", nullable=false)
      */
-    private \DateTimeImmutable $dateCreated;
+    private \DateTimeInterface $dateCreated;
     /**
      * @var \DateTimeImmutable|null
      *
      * @ORM\Column(name="date_status_changed", type="datetime", nullable=true)
      */
-    private ?\DateTimeImmutable $dateStatusChanged;
+    private ?\DateTimeInterface $dateStatusChanged;
     /**
      * @var int
      *
@@ -142,7 +142,7 @@ class ProductRecommendation
     /**
      * @param \DateTimeImmutable $dateCreated
      */
-    public function setDateCreated(\DateTimeImmutable $dateCreated): void
+    public function setDateCreated(\DateTimeInterface $dateCreated): void
     {
         $this->dateCreated = $dateCreated;
     }
@@ -158,7 +158,7 @@ class ProductRecommendation
     /**
      * @param \DateTimeImmutable|null $dateStatusChanged
      */
-    public function setDateStatusChanged(?\DateTimeImmutable $dateStatusChanged): void
+    public function setDateStatusChanged(?\DateTimeInterface $dateStatusChanged): void
     {
         $this->dateStatusChanged = $dateStatusChanged;
     }

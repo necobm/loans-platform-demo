@@ -31,6 +31,7 @@ loans:
             emptySearchCriteria: Debe indicarse al menos un parámetro de búsqueda
         useCase:
             invalidFinancialPreferences: El usuario no tiene establecidas sus preferencias financieras
+            existingProductRecommendationForClient: Ya existe una Recomendación de Producto en espera de aceptación o rechazo
     
     templates:
         productRecommendation:

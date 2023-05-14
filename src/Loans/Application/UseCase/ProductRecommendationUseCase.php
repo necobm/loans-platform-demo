@@ -21,6 +21,16 @@ class ProductRecommendationUseCase
      */
     public function generateProductRecommendationForAClient(Client $client): ?ProductRecommendation
     {
+
+        $existingActiveRecommendation = $this->productRecommendationRepository->findByCriteria([
+            'status' => ProductRecommendation::STATUS_CREATED,
+            'client' => $client->getId()
+        ]);
+
+        if (!empty($existingActiveRecommendation)) {
+            return $existingActiveRecommendation[0];
+        }
+
         /** @var array $availableProducts */
         $availableProducts = $this->productRepository->all();
 
@@ -45,12 +55,16 @@ class ProductRecommendationUseCase
         //If there are more than one compatible product, we have to choose the one of highest score in order
         // to give the best recommendation to the user
         arsort($scoresByProduct, SORT_NUMERIC);
-        $productId = (int)array_key_first($scoresByProduct);
-        $productToRecommend = array_filter($availableProducts, fn(Product $p) => $p->getId() === $productId);
+        $productId = array_key_first($scoresByProduct);
+        foreach ($availableProducts as $product) {
+            if($product->getId() === $productId) {
+                $productRecommendation = new ProductRecommendation($client, $product);
+                $this->productRecommendationRepository->saveAndFlush($productRecommendation);
 
-        $productRecommendation = new ProductRecommendation($client, $productToRecommend[0]);
-        $this->productRecommendationRepository->saveAndFlush($productRecommendation);
+                return $productRecommendation;
+            }
+        }
 
-        return $productRecommendation;
+        return null;
     }
 }
