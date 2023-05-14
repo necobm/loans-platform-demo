@@ -4,11 +4,9 @@ namespace App\Loans\Infrastructure\Controller;
 
 
 use App\Loans\Application\UseCase\ClientUseCase;
-use App\Loans\Domain\Model\Client;
-use Doctrine\DBAL\Exception;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Loans\Domain\Exception\ResourceNotFoundException;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,7 +23,7 @@ class ProductRecommendationController
         private readonly Environment $twig,
         private readonly ProductRecommendationUseCase $productRecommendationUseCase,
         private readonly ClientUseCase $clientUseCase,
-        private Security $security
+        private readonly Security $security
     ){}
 
     /**
@@ -35,7 +33,7 @@ class ProductRecommendationController
      * @throws \Exception
      */
     #[Route(path: '/recommendations', name: 'recommendations_get', methods: ['GET'])]
-    public function getProductRecommendations(): Response
+    public function getProductRecommendations(AdminUrlGenerator $adminUrlGenerator): Response
     {
         $user = $this->security->getUser();
         $client = $this->clientUseCase->getClientByEmail($user->getUserIdentifier());
@@ -46,6 +44,7 @@ class ProductRecommendationController
 
         try {
             $productRecommendation = $this->productRecommendationUseCase->generateProductRecommendationForAClient($client);
+
             return new Response(
                 $this->twig->render('@Loans/product_recommendation.html.twig', [
                     'product_recommendation' => $productRecommendation
@@ -59,5 +58,38 @@ class ProductRecommendationController
                 ])
             );
         }
+    }
+
+    /**
+     * @throws \Exception
+     */
+    #[Route(path: '/recommendations/{id}/accept', name: 'recommendations_accept', methods: ['GET'])]
+    public function acceptProductRecommendation(int $id): Response
+    {
+        $productRecommendation = $this->productRecommendationUseCase->acceptProductRecommendation($id);
+        return new Response(
+            $this->twig->render('@Loans/product_recommendation_status.html.twig', [
+                'status' => 'success'
+            ])
+        );
+    }
+
+    /**
+     * @param int $id
+     * @return Response
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws ResourceNotFoundException
+     */
+    #[Route(path: '/recommendations/{id}/reject', name: 'recommendations_reject', methods: ['GET'])]
+    public function rejectRecommendation(int $id): Response
+    {
+        $productRecommendation = $this->productRecommendationUseCase->rejectProductRecommendation($id);
+        return new Response(
+            $this->twig->render('@Loans/product_recommendation_status.html.twig', [
+                'status' => 'rejected'
+            ])
+        );
     }
 }

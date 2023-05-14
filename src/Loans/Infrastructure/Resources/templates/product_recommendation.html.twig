@@ -4,6 +4,9 @@
     {% if product_recommendation is defined and product_recommendation != null %}
         <h1>{{ 'loans.templates.productRecommendation.headerSuccess'|trans }}</h1>
         <p><b>{{ 'loans.templates.productRecommendation.product'|trans }}: </b> {{ product_recommendation.product.name }}</p>
+        <hr/>
+        <a class="btn btn-primary" href="{{ ea_url().setRoute('recommendations_accept', {'id':product_recommendation.id}) }}">Aceptar</a>
+        <a class="btn btn-danger" href="{{ ea_url().setRoute('recommendations_reject', {'id':product_recommendation.id}) }}">Rechazar</a>
     {% else %}
         <h1>{{ 'loans.templates.productRecommendation.headerFailed'|trans }}</h1>
         <p>{{ 'loans.templates.productRecommendation.textFailed'|trans }}</p>

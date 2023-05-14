@@ -19,7 +19,7 @@ loans:
     menuItem:
         mainMenu:
             products: Productos
-            loans: Préstamos
+            loans: Mis Productos
             productTypes: Tipos de productos
             settings: Configuración
             clients: Clientes
@@ -32,6 +32,7 @@ loans:
         useCase:
             invalidFinancialPreferences: El usuario no tiene establecidas sus preferencias financieras
             existingProductRecommendationForClient: Ya existe una Recomendación de Producto en espera de aceptación o rechazo
+            productRecommendationNotFound: La recomendación de producto solicitada no existe
     
     templates:
         productRecommendation:

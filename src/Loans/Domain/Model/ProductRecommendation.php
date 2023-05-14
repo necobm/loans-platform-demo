@@ -241,6 +241,7 @@ class ProductRecommendation
     public function setStatus(string $status): void
     {
         $this->status = $status;
+        $this->dateStatusChanged = new \DateTimeImmutable();
     }
 
 

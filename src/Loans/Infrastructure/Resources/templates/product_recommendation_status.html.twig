@@ -1,0 +1,15 @@
+{% extends '@EasyAdmin/layout.html.twig' %}
+
+{% block main %}
+    {% if status is defined and status == 'success' %}
+        <h1>Nuevo Producto Financiero creado</h1>
+        <div class="alert-primary">
+            <h3>Se ha procesado su solicitud y se ha credo su nuevo producto financiero, puede ver sus detalles en el listado de Productos</h3>
+        </div>
+    {% else %}
+        <h1>Recomendación rechazada</h1>
+        <div class="alert-info">
+            <h3>Tal y como lo ha solicitado, se ha rechazado nuestra recomendación de contratación de Producto Financiero</h3>
+        </div>
+    {% endif %}
+{% endblock %}

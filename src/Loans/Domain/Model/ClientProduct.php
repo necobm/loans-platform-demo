@@ -33,17 +33,17 @@ class ClientProduct
      */
     private Product $product;
     /**
-     * @var \DateTimeImmutable
+     * @var \DateTimeInterface
      *
      * @ORM\Column(name="start_date", type="datetime", nullable=false)
      */
-    private \DateTimeImmutable $startDate;
+    private \DateTimeInterface $startDate;
     /**
      * @var \DateTimeImmutable
      *
      * @ORM\Column(name="end_date", type="date", nullable=false)
      */
-    private \DateTimeImmutable $endDate;
+    private \DateTimeInterface $endDate;
     /**
      * @var int
      *
@@ -62,6 +62,23 @@ class ClientProduct
      * @ORM\Column(name="status", type="string", length=20, nullable=false)
      */
     private string $status = self::STATUS_IN_REVISION;
+
+    public function __construct(
+        ProductRecommendation $productRecommendation
+    )
+    {
+        $this->setClient($productRecommendation->getClient());
+        $this->setProduct($productRecommendation->getProduct());
+        $this->setStartDate(new \DateTimeImmutable());
+        $this->setEndDate(
+            $this->startDate->add(
+                new \DateInterval('P'. $productRecommendation->getLoanTerm() .'Y')
+            )
+        );
+        $this->setInterestRate($productRecommendation->getInterestRate());
+        $this->setMonthlyFee($productRecommendation->getMonthlyFee());
+        $this->setStatus(self::STATUS_ACTIVE);
+    }
 
 
     /**
@@ -105,33 +122,33 @@ class ClientProduct
     }
 
     /**
-     * @return \DateTimeImmutable
+     * @return \DateTimeInterface
      */
-    public function getStartDate(): \DateTimeImmutable
+    public function getStartDate(): \DateTimeInterface
     {
         return $this->startDate;
     }
 
     /**
-     * @param \DateTimeImmutable $startDate
+     * @param \DateTimeInterface $startDate
      */
-    public function setStartDate(\DateTimeImmutable $startDate): void
+    public function setStartDate(\DateTimeInterface $startDate): void
     {
         $this->startDate = $startDate;
     }
 
     /**
-     * @return \DateTimeImmutable
+     * @return \DateTimeInterface
      */
-    public function getEndDate(): \DateTimeImmutable
+    public function getEndDate(): \DateTimeInterface
     {
         return $this->endDate;
     }
 
     /**
-     * @param \DateTimeImmutable $endDate
+     * @param \DateTimeInterface $endDate
      */
-    public function setEndDate(\DateTimeImmutable $endDate): void
+    public function setEndDate(\DateTimeInterface $endDate): void
     {
         $this->endDate = $endDate;
     }

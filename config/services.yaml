@@ -19,7 +19,9 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Loans/Domain/Model/'
             - '../src/Kernel.php'
-
+  
+    ## Repositories
+        
     App\Loans\Infrastructure\Repository\ProductRepository:
         arguments:
             - 'App\Loans\Domain\Model\Product'
@@ -30,8 +32,15 @@ services:
             
     App\Loans\Infrastructure\Repository\ClientRepository:
         arguments:
-            - 'App\Loans\Domain\Model\Client'        
+            - 'App\Loans\Domain\Model\Client'
+            
+    App\Loans\Infrastructure\Repository\ClientProductRepository:
+        arguments:
+            - 'App\Loans\Domain\Model\ClientProduct'        
         
+    
+    ## Use Cases
+    
     App\Loans\Application\UseCase\ProductRecommendationUseCase:
         arguments:
             - '@App\Loans\Infrastructure\Repository\ProductRepository'
@@ -40,3 +49,7 @@ services:
     App\Loans\Application\UseCase\ClientUseCase:
         arguments:
             - '@App\Loans\Infrastructure\Repository\ClientRepository'
+                
+    App\Loans\Application\UseCase\ClientProductUseCase:
+        arguments:
+            - '@App\Loans\Infrastructure\Repository\ClientProductRepository'            
