@@ -1,0 +1,10 @@
+App\Loans\Domain\Model\Product:
+    'Product_{1..4}':
+        name: '<sentence(2)>'
+        interestRate: '<numberBetween(0.5, 8)>'
+        maxTerm: '<numberBetween(5, 20)>'
+        maxAmount: '<numberBetween(1000, 30000)>'
+        type: '@ProductType_*'
+        minimalIncomeRequirement: '<numberBetween(500, 2000)>'
+        adicionalCosts: '<numberBetween(0, 500)>'
+        

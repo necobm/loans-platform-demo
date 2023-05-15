@@ -1,0 +1,6 @@
+App\Loans\Domain\Model\ClientFinancialPreferences:
+    'ClientPreference_{1..4}':
+        client: '@Client_<current()>'
+        productType: '@ProductType_*'
+        loanAmount: '<numberBetween(300, 10000)>'
+        maxTerm: '<numberBetween(2, 10)>'

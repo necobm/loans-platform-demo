@@ -1,0 +1,25 @@
+App\Security\Domain\Model\User:
+    'User_1':
+        email: 'client1@myemail.com'
+        password: '\$2y\$13\$7LWPqL6N3kzcmrK2HT6KTOX8gtA2HbQevni2GQ.RzoszpqAFNs6Sm'
+        rol: 'ROLE_USER'
+
+    'User_2':
+        email: 'client2@myemail.com'
+        password: '\$2y\$13\$7LWPqL6N3kzcmrK2HT6KTOX8gtA2HbQevni2GQ.RzoszpqAFNs6Sm'
+        rol: 'ROLE_USER'
+        
+    'User_3':
+        email: 'client3@myemail.com'
+        password: '\$2y\$13\$7LWPqL6N3kzcmrK2HT6KTOX8gtA2HbQevni2GQ.RzoszpqAFNs6Sm'
+        rol: 'ROLE_USER'
+            
+    'User_4':
+        email: 'client4@myemail.com'
+        password: '\$2y\$13\$7LWPqL6N3kzcmrK2HT6KTOX8gtA2HbQevni2GQ.RzoszpqAFNs6Sm'
+        rol: 'ROLE_USER'
+            
+    'User_admin':
+        email: 'admin@myemail.com'
+        password: '\$2y\$13\$7LWPqL6N3kzcmrK2HT6KTOX8gtA2HbQevni2GQ.RzoszpqAFNs6Sm'
+        rol: 'ROLE_ADMIN'

@@ -93,4 +93,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->email;
     }
+
+    /**
+     * @return string
+     */
+    public function getRol(): string
+    {
+        return $this->rol;
+    }
+
+    /**
+     * @param string $rol
+     */
+    public function setRol(string $rol): void
+    {
+        $this->rol = $rol;
+    }
+
 }

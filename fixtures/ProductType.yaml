@@ -1,0 +1,9 @@
+App\Loans\Domain\Model\ProductType:
+    'ProductType_1':
+        name: 'Préstamo personal'
+        value: 1
+        
+    'ProductType_2':
+        name: 'Tarjeta Crédito'
+        value: 2    
+        

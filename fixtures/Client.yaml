@@ -1,0 +1,36 @@
+App\Loans\Domain\Model\Client:
+    'Client_1':
+        name: '<firstName()>'
+        surname: '<lastName()>'
+        age: '<numberBetween(18, 90)>'
+        email: 'client1@myemail.com'
+        city: 'Madrid'
+        netMonthlyIncome: '<numberBetween(900, 4000)>'
+        totalMonthlySpends: '<numberBetween(600, 1500)>'
+
+    'Client_2':
+        name: '<firstName()>'
+        surname: '<lastName()>'
+        age: '<numberBetween(18, 90)>'
+        email: 'client2@myemail.com'
+        city: 'Sevilla'
+        netMonthlyIncome: '<numberBetween(900, 4000)>'
+        totalMonthlySpends: '<numberBetween(600, 1500)>'
+        
+    'Client_3':
+        name: '<firstName()>'
+        surname: '<lastName()>'
+        age: '<numberBetween(18, 90)>'
+        email: 'client3@myemail.com'
+        city: 'Barcelona'
+        netMonthlyIncome: '<numberBetween(900, 4000)>'
+        totalMonthlySpends: '<numberBetween(600, 1500)>'
+            
+    'Client_4':
+        name: '<firstName()>'
+        surname: '<lastName()>'
+        age: '<numberBetween(18, 90)>'
+        email: 'client4@myemail.com'
+        city: 'Málaga'
+        netMonthlyIncome: '<numberBetween(900, 4000)>'
+        totalMonthlySpends: '<numberBetween(600, 1500)>'        

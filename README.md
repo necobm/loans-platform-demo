@@ -43,7 +43,7 @@ The product associated will be acquired by the client with the conditions fixed 
 Once cloned the repository, fallow these steps (Linux shell):
 
 ```
- cd project/root/dir 
+cd project/root/dir 
 ``` 
 
 ```
@@ -54,7 +54,24 @@ docker compose build --pull --no-cache
 docker compose up -d
 ```
 
+Run make command to install dependencies and create database schema with populated test data
+
+```
+$ docker exec -i loans-demo-php sh -c "make build"
+```
+
 Open https://localhost/loans in your browser
 
+### Test Users
 
+- client1@myemail.com:test  [ROLE_USER]
+- admin@myemail.com:test    [ROLE_ADMIN]
+
+There are more test client users, with same password, same username except first part of email (client1, client2, client..n)
+
+### Run Unit Tests
+
+```
+$ docker exec -i loans-demo-php sh -c "vendor/phpunit/phpunit/phpunit"
+```
 
