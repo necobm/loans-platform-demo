@@ -55,14 +55,20 @@ class ProductRecommendationUseCase
             return null;
         }
 
-        if (count($scoresByProduct) === 1) {
-            return $scoresByProduct;
+        if (count($scoresByProduct) > 1) {
+            arsort($scoresByProduct, SORT_NUMERIC);
         }
 
         //If there are more than one compatible product, we have to choose the one of highest score in order
         // to give the best recommendation to the user
-        arsort($scoresByProduct, SORT_NUMERIC);
+
         $productId = array_key_first($scoresByProduct);
+
+        // We have to check the case when all products scored 0, so any product will be eligible to recommend
+        if($scoresByProduct[$productId] === 0) {
+            return null;
+        }
+
         foreach ($availableProducts as $product) {
             if($product->getId() === $productId) {
                 $productRecommendation = new ProductRecommendation($client, $product);

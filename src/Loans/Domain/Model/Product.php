@@ -250,4 +250,9 @@ class Product
 
         return round($totalAmount / 12, 2);
     }
+
+    public function __toString(): string
+    {
+        return $this->getName();
+    }
 }

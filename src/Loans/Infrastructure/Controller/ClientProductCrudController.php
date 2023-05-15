@@ -7,6 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use Symfony\Component\Translation\TranslatableMessage;
 
 class ClientProductCrudController extends AbstractCrudController
@@ -31,5 +32,14 @@ class ClientProductCrudController extends AbstractCrudController
             ->remove(Crud::PAGE_DETAIL, Action::DELETE)
             ->remove(Crud::PAGE_DETAIL, Action::EDIT)
             ->add(Crud::PAGE_INDEX, Action::DETAIL);
+    }
+
+    public function configureFields(string $pageName): iterable
+    {
+        $fields = parent::configureFields($pageName);
+
+        $fields[] = AssociationField::new('product', new TranslatableMessage('loans.formFieldLabel.clientProduct.product'));
+
+        return $fields;
     }
 }

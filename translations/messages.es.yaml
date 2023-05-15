@@ -15,6 +15,8 @@ loans:
             loanAmount: Monto del préstamo/crédito
             maxTerm: Plazo en años
             productType: Tipo de producto
+        clientProduct:
+            product: Producto
     dashboardControllers:
         clientProductPageTitle: Mis Productos
         productTypePageTitle: Tipos de Productos
