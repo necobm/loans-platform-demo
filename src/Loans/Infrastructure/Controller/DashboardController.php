@@ -48,22 +48,27 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         $client = $this->clientUseCase->getClientByEmail($this->getUser()->getUserIdentifier());
-        return [
+        $menuItems = [
             MenuItem::linkToDashboard('Dashboard', 'fa fa-home'),
-            MenuItem::section(new TranslatableMessage('loans.menuItem.mainMenu.products')),
-            MenuItem::linkToCrud(new TranslatableMessage('loans.menuItem.mainMenu.loans'), 'fa fa-credit-card', ClientProduct::class),
-            MenuItem::linkToUrl(
-                new TranslatableMessage('loans.menuItem.mainMenu.clientPreferences'),
-                'fa fa-wrench',
-                $this->adminUrlGenerator->setController(ClientPreferencesCrudController::class)->setAction(
-                    Action::EDIT
-                )->set('entityId',$client->getFinancialPreferences()->getId())
-            ),
-            MenuItem::linkToRoute(new TranslatableMessage('loans.menuItem.mainMenu.newLoan'), 'fa fa-money', 'recommendations_get'),
             MenuItem::section(new TranslatableMessage('loans.menuItem.mainMenu.settings'))->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud(new TranslatableMessage('loans.menuItem.mainMenu.products'), 'fa fa-dollar', Product::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud(new TranslatableMessage('loans.menuItem.mainMenu.productTypes'), 'fa fa-box', ProductType::class)->setPermission('ROLE_ADMIN'),
             MenuItem::linkToCrud(new TranslatableMessage('loans.menuItem.mainMenu.clients'), 'fa fa-user', Client::class)->setPermission('ROLE_ADMIN')
         ];
+
+        if (!is_null($client)) {
+            $menuItems[] = MenuItem::section(new TranslatableMessage('loans.menuItem.mainMenu.products'));
+            $menuItems[] = MenuItem::linkToCrud(new TranslatableMessage('loans.menuItem.mainMenu.loans'), 'fa fa-credit-card', ClientProduct::class);
+            $menuItems[] = MenuItem::linkToRoute(new TranslatableMessage('loans.menuItem.mainMenu.newLoan'), 'fa fa-money', 'recommendations_get');
+            $menuItems[] = MenuItem::linkToUrl(
+                new TranslatableMessage('loans.menuItem.mainMenu.clientPreferences'),
+                'fa fa-wrench',
+                $this->adminUrlGenerator->setController(ClientPreferencesCrudController::class)->setAction(
+                    Action::EDIT
+                )->set('entityId',$client->getFinancialPreferences()->getId())
+            );
+        }
+
+        return $menuItems;
     }
 }

@@ -20,6 +20,7 @@ class ClientProductCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         $crud->setPageTitle(Action::INDEX,new TranslatableMessage('loans.dashboardControllers.clientProductPageTitle'));
+        $crud->setEntityPermission('OWNER_VIEW');
         return $crud;
     }
 
