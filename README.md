@@ -57,7 +57,7 @@ docker compose up -d
 Run make command to install dependencies and create database schema with populated test data
 
 ```
-$ docker exec -i loans-demo-php sh -c "make build"
+docker exec -i loans-demo-php sh -c "make build"
 ```
 
 Open https://localhost/loans in your browser
